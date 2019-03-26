@@ -1,0 +1,53 @@
+<!--
+--  auth: David goerig
+--  project: Dashboard
+--  file use: Main page
+--  index.ejs
+-->
+
+<!DOCTYPE html>
+<html>
+        <!-- HEAD -->
+<head>
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <!-- -->
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body         { padding-top:80px; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/lodash.js"></script>
+</head>
+<!-- BODY -->
+<body style="background: #434447;">
+<div class="container">
+
+    <div class="jumbotron text-center">
+        <h1><span class="fa fa-rocket"></span> My Epi Dashboard</h1>
+
+        <p>Register with:</p>
+            <!-- LOCAL LOGIN -->
+        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
+             <!-- LOCAL SIGNUP -->
+        <p>Login with:</p>
+        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Local Login</a>
+        <!-- FB SIGNUP -->
+        <a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+    </div>
+</div>
+</body>
+</html>
+
+

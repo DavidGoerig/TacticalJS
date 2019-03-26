@@ -1,0 +1,62 @@
+<!--
+--  auth: David goerig
+--  project: Dashboard
+--  file use: signup page of the application
+--  signup.ejs
+-->
+
+<!DOCTYPE html>
+<html>
+    <!-- HEAD -->
+<head>
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <!-- -->
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body         { padding-top:80px; }
+    </style>
+    <script src="../assets/js/jquery.min.js"></script>
+</head>
+    <!-- BODY -->
+<body style="background: #434447;">
+    <div class="container">
+        <div class="col-sm-6 col-sm-offset-3">
+
+            <h1 style="color: white;"><span class="fa fa-rocket"></span> Signup</h1>
+
+            <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+
+            <!-- LOGIN FORM -->
+            <form action="/signup" method="post">
+                <div class="form-group">
+                    <label style="color: white;">Email</label>
+                    <input type="text" class="form-control" name="email">
+                </div>
+                <div class="form-group">
+                    <label style="color: white;">Password</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+
+                <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+            </form>
+
+            <hr>
+
+            <p style="color: white;">Already have an account? <a href="/login">Login</a></p>
+            <p style="color: white;">Or go <a href="/">home</a>.</p>
+        </div>
+    </div>
+</body>
+</html>

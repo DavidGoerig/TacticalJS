@@ -1,0 +1,31 @@
+{
+  "name": "node-authentication",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt-nodejs": "latest",
+    "body-parser": "latest",
+    "browser-request": "latest",
+    "connect-flash": "latest",
+    "cookie-parser": "latest",
+    "dotenv": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-session": "latest",
+    "method-override": "latest",
+    "mongoose": "latest",
+    "morgan": "latest",
+    "nodemon": "latest",
+    "passport": "latest",
+    "passport-facebook": "latest",
+    "passport-google-oauth": "latest",
+    "passport-local": "latest",
+    "passport-twitter": "latest",
+    "request": "latest",
+    "simple-oauth2": "latest",
+    "socket.io": "latest",
+    "steam-api": "latest",
+    "steamapi": "latest",
+    "passport-steam": "latest",
+    "simple-youtube-api": "latest"
+  }
+}

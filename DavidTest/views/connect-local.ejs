@@ -1,0 +1,61 @@
+<!--
+--  auth: David goerig
+--  project: Dashboard
+--  file use: add local account
+--  connect-local.ejs
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <!-- -->
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body         { padding-top:80px; }
+    </style>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/lodash.js"></script>
+</head>
+<body style="background: #434447;">
+<div class="container">
+<div class="col-sm-6 col-sm-offset-3">
+
+    <h1 style="color: white;"><span class="fa fa-rocket"></span> Add Local Account</h1>
+
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
+    <!-- LOGIN FORM -->
+    <form action="/connect/local" method="post">
+        <div class="form-group">
+            <label style="color: white;">Email</label>
+            <input type="text" class="form-control" name="email">
+        </div>
+        <div class="form-group">
+            <label style="color: white;">Password</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg">Add Local</button>
+    </form>
+
+    <hr>
+
+    <p><a href="/profile">Go back to profile</a></p>
+
+</div>
+</div>
+</body>
+</html>

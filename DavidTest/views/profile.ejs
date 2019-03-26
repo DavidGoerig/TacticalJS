@@ -1,0 +1,859 @@
+<!--
+--  auth: David goerig
+--  project: Dashboard
+--  file use: profil page of the application
+--  profil.ejs
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <!-- -->
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.gridster/0.5.6/jquery.gridster.min.css">
+    <style>
+        body         { padding-top:80px; }
+    </style>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/lodash.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.css" />
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/jquery.gridster/0.5.6/jquery.gridster.min.js'></script>
+
+
+</head>
+<body style="background: #434447;">
+<div class="container">
+    <div class="page-header text-center">
+        <h1 style="color: white;"><span class="fa fa-rocket" style="color: white;"></span> Profile Page</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                <% if (user.local.email) { %>
+                    <p>
+                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>password</strong>: <%= user.local.password %>
+                    </p>
+                    
+                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
+                <% } %>
+
+            </div>
+        </div>
+
+        <!-- FACEBOOK INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+                <!-- check if the user has this token (is the user authenticated with this social account) -->
+                <% if (user.facebook.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.facebook.id %><br>
+                        <strong>token</strong>: <%= user.facebook.token %><br>
+                        <strong>email</strong>: <%= user.facebook.email %><br>
+                        <strong>name</strong>: <%= user.facebook.name %><br>
+                    </p>
+
+                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Steam   SIGNUP -->
+
+</div>
+
+<div style="background: #d8d5db;">
+    <div class="gridster">
+        <ul>
+
+        </ul>
+    </div>
+</div>
+
+<div class = "container">
+    <div class = "row">
+            <div class="col-sm-2 centered" style="text-align: center; color: white;">
+                Météo locale:
+            </div>
+            <div class="col-sm-2 centered" style="text-align: center; color: white;">
+                Météo :
+            </div>
+            <div class="col-sm-2 centered" style="text-align: center; color: white;">
+                Look for a video
+            </div>
+            <div class="col-sm-2 centered" style="text-align: center; color: white;">
+                Look for a playlist
+            </div>
+            <div class="col-sm-2 centered" style="text-align: center; color: white;">
+                Get friend list
+            </div>
+            <div class="col-sm-2 centered" style="text-align: center; color: white;">
+                Get player online
+            </div>
+    </div>
+    <div class = "row">
+            <div class="col-sm-2 centered">
+                    <div class="col-sm-6 centered"  style="text-align: center;">
+                        <div id="addbutton" data-role="button">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" width="30px" height="30px">
+                                <circle style="fill:#43B05C;" cx="25" cy="25" r="25"/>
+                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"/>
+                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 centered"  style="text-align: center;">
+                        <div id="delbutton" data-role="button">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="30px" height="30px">
+                                <path style="fill:#6DC82A;" d="M256,512C114.839,512,0,397.161,0,256S114.839,0,256,0s256,114.839,256,256S397.161,512,256,512z"/>
+                                <path style="fill:#61B325;" d="M512,256C512,114.839,397.161,0,256,0v512C397.161,512,512,397.161,512,256z"/>
+                                <path style="fill:#FFFFFF;" d="M389.594,272.699H122.406c-9.225,0-16.699-7.475-16.699-16.699c0-9.225,7.475-16.699,16.699-16.699
+                               h267.189c9.225,0,16.699,7.475,16.699,16.699C406.294,265.225,398.819,272.699,389.594,272.699z"/>
+                                <path style="fill:#FFEB99;" d="M389.594,239.301H256v33.399h133.594c9.225,0,16.699-7.475,16.699-16.699
+                               C406.294,246.775,398.819,239.301,389.594,239.301z"/>
+                           </svg>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-sm-2 centered">
+                <div class="row">
+                        <input type="city" value="Put your city.">
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 centered" style="text-align: center;">
+                        <div id="addbutton1" data-role="button">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" width="30px" height="30px">
+                                <circle style="fill:#43B05C;" cx="25" cy="25" r="25"/>
+                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"/>
+                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 centered" style="text-align: center;">
+                        <div id="delbutton1" data-role="button">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="30px" height="30px">
+                                <path style="fill:#6DC82A;" d="M256,512C114.839,512,0,397.161,0,256S114.839,0,256,0s256,114.839,256,256S397.161,512,256,512z"/>
+                                <path style="fill:#61B325;" d="M512,256C512,114.839,397.161,0,256,0v512C397.161,512,512,397.161,512,256z"/>
+                                <path style="fill:#FFFFFF;" d="M389.594,272.699H122.406c-9.225,0-16.699-7.475-16.699-16.699c0-9.225,7.475-16.699,16.699-16.699
+                                h267.189c9.225,0,16.699,7.475,16.699,16.699C406.294,265.225,398.819,272.699,389.594,272.699z"/>
+                                <path style="fill:#FFEB99;" d="M389.594,239.301H256v33.399h133.594c9.225,0,16.699-7.475,16.699-16.699
+                                C406.294,246.775,398.819,239.301,389.594,239.301z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col-sm-2 centered">
+            <div class="row">
+                <input id="spotifyArtist" value="Put your video name.">
+            </div>
+            <div class="row">
+            <div class="col-sm-6 centered" style="text-align: center;">
+                <div id="addbutton2" data-role="button">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" width="30px" height="30px">
+                        <circle style="fill:#43B05C;" cx="25" cy="25" r="25"/>
+                        <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"/>
+                        <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="col-sm-6 centered" style="text-align: center;">
+                <div id="delbutton2" data-role="button">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="30px" height="30px">
+                        <path style="fill:#6DC82A;" d="M256,512C114.839,512,0,397.161,0,256S114.839,0,256,0s256,114.839,256,256S397.161,512,256,512z"/>
+                        <path style="fill:#61B325;" d="M512,256C512,114.839,397.161,0,256,0v512C397.161,512,512,397.161,512,256z"/>
+                        <path style="fill:#FFFFFF;" d="M389.594,272.699H122.406c-9.225,0-16.699-7.475-16.699-16.699c0-9.225,7.475-16.699,16.699-16.699
+                       h267.189c9.225,0,16.699,7.475,16.699,16.699C406.294,265.225,398.819,272.699,389.594,272.699z"/>
+                        <path style="fill:#FFEB99;" d="M389.594,239.301H256v33.399h133.594c9.225,0,16.699-7.475,16.699-16.699
+                       C406.294,246.775,398.819,239.301,389.594,239.301z"/>
+                   </svg>
+                </div>
+            </div>
+            </div>
+    </div>
+    <div class="col-sm-2 centered">
+        <div class="row">
+            <input id="spotopsong" value="Put your playlist url.">
+        </div>
+        <div class="row">
+        <div class="col-sm-6 centered" style="text-align: center;">
+            <div id="addbutton3" data-role="button">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" width="30px" height="30px">
+                    <circle style="fill:#43B05C;" cx="25" cy="25" r="25"/>
+                    <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"/>
+                    <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"/>
+                </svg>
+            </div>
+        </div>
+        <div class="col-sm-6 centered" style="text-align: center;">
+            <div id="delbutton3" data-role="button">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="30px" height="30px">
+                    <path style="fill:#6DC82A;" d="M256,512C114.839,512,0,397.161,0,256S114.839,0,256,0s256,114.839,256,256S397.161,512,256,512z"/>
+                    <path style="fill:#61B325;" d="M512,256C512,114.839,397.161,0,256,0v512C397.161,512,512,397.161,512,256z"/>
+                    <path style="fill:#FFFFFF;" d="M389.594,272.699H122.406c-9.225,0-16.699-7.475-16.699-16.699c0-9.225,7.475-16.699,16.699-16.699
+                   h267.189c9.225,0,16.699,7.475,16.699,16.699C406.294,265.225,398.819,272.699,389.594,272.699z"/>
+                    <path style="fill:#FFEB99;" d="M389.594,239.301H256v33.399h133.594c9.225,0,16.699-7.475,16.699-16.699
+                   C406.294,246.775,398.819,239.301,389.594,239.301z"/>
+               </svg>
+            </div>
+        </div>
+        </div>
+</div>
+<div class="col-sm-2 centered">
+    <div class="row">
+        <input id="hisIdFriends" value="Put your account name.">
+    </div>
+    <div class="row">
+        <div class="col-sm-6 centered" style="text-align: center;">
+            <div id="addbutton4" data-role="button">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" width="30px" height="30px">
+                    <circle style="fill:#43B05C;" cx="25" cy="25" r="25"/>
+                    <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"/>
+                    <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"/>
+                </svg>
+            </div>
+        </div>
+        <div class="col-sm-6 centered" style="text-align: center;">
+            <div id="delbutton4" data-role="button">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="30px" height="30px">
+                    <path style="fill:#6DC82A;" d="M256,512C114.839,512,0,397.161,0,256S114.839,0,256,0s256,114.839,256,256S397.161,512,256,512z"/>
+                    <path style="fill:#61B325;" d="M512,256C512,114.839,397.161,0,256,0v512C397.161,512,512,397.161,512,256z"/>
+                    <path style="fill:#FFFFFF;" d="M389.594,272.699H122.406c-9.225,0-16.699-7.475-16.699-16.699c0-9.225,7.475-16.699,16.699-16.699
+                    h267.189c9.225,0,16.699,7.475,16.699,16.699C406.294,265.225,398.819,272.699,389.594,272.699z"/>
+                    <path style="fill:#FFEB99;" d="M389.594,239.301H256v33.399h133.594c9.225,0,16.699-7.475,16.699-16.699
+                    C406.294,246.775,398.819,239.301,389.594,239.301z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="col-sm-2 centered">
+            <div class="row">
+                <input id="gameId" value="Put your game ID.">
+            </div>
+            <div class="row">
+                <div class="col-sm-6 centered" style="text-align: center;">
+                    <div id="addbutton5" data-role="button">
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" width="30px" height="30px">
+                            <circle style="fill:#43B05C;" cx="25" cy="25" r="25"/>
+                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"/>
+                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"/>
+                        </svg>
+                    </div>
+                </div>
+            <div class="col-sm-6 centered" style="text-align: center;">
+                <div id="delbutton5" data-role="button">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="30px" height="30px">
+                        <path style="fill:#6DC82A;" d="M256,512C114.839,512,0,397.161,0,256S114.839,0,256,0s256,114.839,256,256S397.161,512,256,512z"/>
+                        <path style="fill:#61B325;" d="M512,256C512,114.839,397.161,0,256,0v512C397.161,512,512,397.161,512,256z"/>
+                        <path style="fill:#FFFFFF;" d="M389.594,272.699H122.406c-9.225,0-16.699-7.475-16.699-16.699c0-9.225,7.475-16.699,16.699-16.699
+                        h267.189c9.225,0,16.699,7.475,16.699,16.699C406.294,265.225,398.819,272.699,389.594,272.699z"/>
+                        <path style="fill:#FFEB99;" d="M389.594,239.301H256v33.399h133.594c9.225,0,16.699-7.475,16.699-16.699
+                        C406.294,246.775,398.819,239.301,389.594,239.301z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class = "container">
+        <div class = "row">
+            <div class="col-sm-2 centered" style="text-align: center; color: white;">
+                Get friend level
+            </div>
+        </div>
+        <div class = "row">
+            <div class="col-sm-2 centered">
+                <div class="row">
+                    <input id="hisIdInv" value="Put your account name.">
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 centered" style="text-align: center;">
+                        <div id="addbutton6" data-role="button">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" width="30px" height="30px">
+                                <circle style="fill:#43B05C;" cx="25" cy="25" r="25"/>
+                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="25" y1="13" x2="25" y2="38"/>
+                                <line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="37.5" y1="25" x2="12.5" y2="25"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 centered" style="text-align: center;">
+                        <div id="delbutton6" data-role="button">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="30px" height="30px">
+                                <path style="fill:#6DC82A;" d="M256,512C114.839,512,0,397.161,0,256S114.839,0,256,0s256,114.839,256,256S397.161,512,256,512z"/>
+                                <path style="fill:#61B325;" d="M512,256C512,114.839,397.161,0,256,0v512C397.161,512,512,397.161,512,256z"/>
+                                <path style="fill:#FFFFFF;" d="M389.594,272.699H122.406c-9.225,0-16.699-7.475-16.699-16.699c0-9.225,7.475-16.699,16.699-16.699
+                                h267.189c9.225,0,16.699,7.475,16.699,16.699C406.294,265.225,398.819,272.699,389.594,272.699z"/>
+                                <path style="fill:#FFEB99;" d="M389.594,239.301H256v33.399h133.594c9.225,0,16.699-7.475,16.699-16.699
+                                C406.294,246.775,398.819,239.301,389.594,239.301z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+$(function(){ //DOM Ready
+
+    var persist_socket = io.connect('http://localhost:8080');
+    persist_socket.emit('persistance', "getpersist");
+    persist_socket.on('persistrep', function(message){
+        if (message.length == 7) {
+            if (message[0] == 'Y') {
+                var socket = io.connect('http://localhost:8080');
+                var gridster = $(".gridster ul").gridster().data('gridster');
+                socket.emit('askwidget', 'meteo');
+                socket.on('getwidget', function(data) {var our_request = data;
+                    var str = '<li id="new" style="background-color: #2c3e50; color: white; text-align:center;>';
+                    str += our_request;
+                    str += '</li>';
+                    gridster.add_widget(str, 3, 3);
+                });
+            }
+            if (message[1] == 'Y') {
+                var socket1 = io.connect('http://localhost:8080');
+                var gridster1 = $(".gridster ul").gridster().data('gridster');
+                socket1.emit('askwidget', 'meteo_your_city');
+                socket.emit('your_city', "DB");
+                socket1.on('getwidget', function(data) {
+                    console.log(data);
+                    var our_request = data;
+                    var str = '<li id="new2" style="background-color: #2c3e50; color: white; text-align:center;>';
+                    str += our_request;
+                    str += '</li>';
+                    gridster.add_widget(str, 3, 3);
+                });
+            }
+            if (message[2] == 'Y') {
+                var socket2 = io.connect('http://localhost:8080');
+                var gridster2 = $(".gridster ul").gridster().data('gridster');
+                socket2.emit('askwidget', 'steam_list_games');
+                socket2.on('getwidget', function(data) {
+                    console.log(data);
+                    var our_request = data;
+                    var str = '<li id="new2" style="background-color: #2c3e50; color: white; text-align:center;>';
+                    str += our_request;
+                    str += '</li>';
+                    gridster2.add_widget(str, 3, 2);
+                });
+            }
+            if (message[3] == 'Y') {
+                var socket3 = io.connect('http://localhost:8080');
+                var gridster3 = $(".gridster ul").gridster().data('gridster');
+                socket3.emit('askwidget', 'steam_isPlayingSharedGame');
+                socket3.on('getwidget', function(data) {
+                    console.log(data);
+                    var our_request = data;
+                    var str = '<li id="new2" style="background-color: #2c3e50; color: white; text-align:center;>';
+                    str += our_request;
+                    str += '</li>';
+                    gridster3.add_widget(str, 3, 2);
+                });
+            }
+            if (message[4] == 'Y') {
+                var socket4 = io.connect('http://localhost:8080');
+                var gridster4 = $(".gridster ul").gridster().data('gridster');
+                socket4.emit('askwidget', 'steam_player');
+                socket4.on('getwidget', function(data) {
+                    console.log(data);
+                    var our_request = data;
+                    var str = '<li id="new2" style="background-color: #2c3e50; color: white; text-align:center;>';
+                    str += our_request;
+                    str += '</li>';
+                    gridster4.add_widget(str, 3, 2);
+                });
+            }
+            if (message[5] == 'Y') {
+                var socket5 = io.connect('http://localhost:8080');
+                var gridster5 = $(".gridster ul").gridster().data('gridster');
+                socket5.emit('askwidget', 'steam_player_on_game');
+                socket5.on('getwidget', function(data) {
+                    console.log(data);
+                    var our_request = data;
+                    var str = '<li id="new2" style="background-color: #2c3e50; color: white; text-align:center;>';
+                    str += our_request;
+                    str += '</li>';
+                    gridster5.add_widget(str, 3, 2);
+                });
+            }
+            if (message[6] == 'Y') {
+                var socket6 = io.connect('http://localhost:8080');
+                var gridster6 = $(".gridster ul").gridster().data('gridster');
+                socket6.emit('askwidget', 'steam_player_inv');
+                socket6.on('getwidget', function(data) {
+                    console.log(data);
+                    var our_request = data;
+                    var str = '<li id="new2" style="background-color: #2c3e50; color: white; text-align:center;>';
+                    str += our_request;
+                    str += '</li>';
+                    gridster6.add_widget(str, 3, 2);
+                });
+            }
+        }
+    });
+
+    $(".gridster ul").gridster({
+        widget_margins: [10, 10],
+        widget_base_dimensions: [140, 140]
+    });
+
+/*
+**      WIDGET 1
+** ----------------------------------------------
+*/
+$("#addbutton").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetadd', "WIDGET1");
+            socket.on('responseadd', function(message){
+                if (message == "NOWIDGET") {
+                    var socket = io.connect('http://localhost:8080');
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    socket.emit('askwidget', 'meteo');
+                    socket.on('getwidget', function(data) {
+                        console.log(data);
+                        var our_request = data;
+                        var str = '<li id="new" style="background-color: #2c3e50; color: white; text-align:center;>';
+                        str += data;
+                        str += '</li>';
+                        gridster.add_widget(str, 3, 3);
+                    });
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    alert("You can't add twice the same widget dude.")
+                }
+            });
+           }
+      );
+
+    $("#delbutton").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetdel', "WIDGET1");
+            socket.on('responsedel', function(message){
+                if (message == "NOWIDGET") {
+                    alert("Add the widget before delete it.")
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    var listItem = document.getElementById("new");
+                    pos = $( "li" ).index( listItem );
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    gridster.remove_widget( $('.gridster li').eq(pos) );
+                }
+            });
+    });
+
+/*
+**      WIDGET 2
+** ----------------------------------------------
+*/
+$("#addbutton1").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetadd', "WIDGET2");
+            socket.on('responseadd', function(message){
+                if (message == "NOWIDGET") {
+                    var socket = io.connect('http://localhost:8080');
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    socket.emit('askwidget', 'meteo_your_city');
+                    var town = $("input").val();
+                    socket.emit('your_city', town);
+                    socket.on('getwidget', function(data) {
+                        console.log(data);
+                        var our_request = data;
+                        var str = '<li id="new2" style="background-color: #2c3e50; color: white; text-align:center;>';
+                        str += our_request;
+                        str += '</li>';
+                        gridster.add_widget(str, 3, 3);
+                    });
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    alert("You can't add twice the same widget dude.")
+                }
+            });
+           }
+      );
+
+    $("#delbutton1").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetdel', "WIDGET2");
+            socket.on('responsedel', function(message){
+                if (message == "NOWIDGET") {
+                    alert("Add the widget before delete it.")
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    var listItem = document.getElementById("new2");
+                    pos = $( "li" ).index( listItem );
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    gridster.remove_widget( $('.gridster li').eq(pos) );
+                }
+            });
+    });
+
+/*
+**      WIDGET 3
+** ----------------------------------------------
+*/
+$("#addbutton2").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetadd', "WIDGET3");
+            socket.on('responseadd', function(message){
+                if (message == "NOWIDGET") {
+                    var socket2 = io.connect('http://localhost:8080');
+                    var gridster2 = $(".gridster ul").gridster().data('gridster');
+                    socket2.emit('askwidget', 'get_artist');
+                    var spotArtID = $("#spotifyArtist").val();
+                    console.log(spotArtID);
+                    socket2.emit('spotArtID', spotArtID);
+                    socket2.on('getwidget', function(data) {
+                        console.log(data);
+                        var our_request = data;
+                        var str = '<li id="new3" style="background-color: #2c3e50; color: white; text-align:center;>';
+                        str += our_request;
+                        str += '</li>';
+                        gridster2.add_widget(str, 3, 2);
+                    });
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    alert("You can't add twice the same widget dude.")
+                }
+            });
+           }
+      );
+
+    $("#delbutton2").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetdel', "WIDGET3");
+            socket.on('responsedel', function(message){
+                if (message == "NOWIDGET") {
+                    alert("Add the widget before delete it.")
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    var listItem = document.getElementById("new3");
+                    pos = $( "li" ).index( listItem );
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    gridster.remove_widget( $('.gridster li').eq(pos) );
+                }
+            });
+    });
+
+/*
+**      WIDGET 4
+** ----------------------------------------------
+*/
+$("#addbutton3").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetadd', "WIDGET4");
+            socket.on('responseadd', function(message){
+                if (message == "NOWIDGET") {
+                    var socket3 = io.connect('http://localhost:8080');
+                    var gridster3 = $(".gridster ul").gridster().data('gridster');
+                    socket3.emit('askwidget', 'get_top_song');
+                    var spotID = $("#spotopsong").val();
+                    console.log(spotID);
+                    socket3.emit('spotID', spotID);
+                    socket3.on('getwidget', function(data) {
+                        console.log(data);
+                        var our_request = data;
+                        var str = '<li id="new4" style="background-color: #2c3e50; color: white; text-align:center;>';
+                        str += our_request;
+                        str += '</li>';
+                        gridster3.add_widget(str, 3, 2);
+                    });                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    alert("You can't add twice the same widget dude.")
+                }
+            });
+           }
+      );
+
+    $("#delbutton3").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetdel', "WIDGET4");
+            socket.on('responsedel', function(message){
+                if (message == "NOWIDGET") {
+                    alert("Add the widget before delete it.")
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    var listItem = document.getElementById("new4");
+                    pos = $( "li" ).index( listItem );
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    gridster.remove_widget( $('.gridster li').eq(pos) );
+                }
+            });
+    });
+
+/*
+**      WIDGET 5
+** ----------------------------------------------
+*/
+$("#addbutton4").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetadd', "WIDGET5");
+            socket.on('responseadd', function(message){
+                if (message == "NOWIDGET") {
+                    var socket4 = io.connect('http://localhost:8080');
+                    var gridster4 = $(".gridster ul").gridster().data('gridster');
+                    socket4.emit('askwidget', 'steam_player');
+                    var hisID = $("#hisIdFriends").val();
+                    console.log(hisID);
+                    socket4.emit('hisIdFriends', hisID);
+                    socket4.on('getwidget', function(data) {
+                        console.log(data);
+                        var our_request = data;
+                        var str = '<li id="new5" style="background-color: #2c3e50; color: white; text-align:center; overflow: scroll;>';
+                        str += our_request;
+                        str += '</li>';
+                        gridster4.add_widget(str, 3, 2);
+                    });
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    alert("You can't add twice the same widget dude.")
+                }
+            });
+
+           }
+      );
+
+    $("#delbutton4").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetdel', "WIDGET5");
+            socket.on('responsedel', function(message){
+                if (message == "NOWIDGET") {
+                    alert("Add the widget before delete it.")
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    var listItem = document.getElementById("new5");
+                    pos = $( "li" ).index( listItem );
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    gridster.remove_widget( $('.gridster li').eq(pos) );
+                }
+            });
+    });
+
+/*
+**      WIDGET 6
+** ----------------------------------------------
+*/
+$("#addbutton5").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetadd', "WIDGET6");
+            socket.on('responseadd', function(message){
+                if (message == "NOWIDGET") {
+                    var socket5 = io.connect('http://localhost:8080');
+                    var gridster5 = $(".gridster ul").gridster().data('gridster');
+                    socket5.emit('askwidget', 'steam_player_on_game');
+                    var gameID = $("#gameId").val();
+                    socket5.emit('gameId', gameID);
+                    socket5.on('getwidget', function(data) {
+                        console.log(data);
+                        var our_request = data;
+                        var str = '<li id="new6" style="background-color: #2c3e50; color: white; text-align:center;">';
+                        str += our_request;
+                        str += '</li>';
+                        gridster5.add_widget(str, 3, 2);
+                    });
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    alert("You can't add twice the same widget dude.")
+                }
+            });
+           }
+      );
+
+    $("#delbutton5").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetdel', "WIDGET6");
+            socket.on('responsedel', function(message){
+                if (message == "NOWIDGET") {
+                    alert("Add the widget before delete it.")
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    var listItem = document.getElementById("new6");
+                    pos = $( "li" ).index( listItem );
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    gridster.remove_widget( $('.gridster li').eq(pos) );
+                }
+            });
+    });
+
+/*
+**      WIDGET 7
+** ----------------------------------------------
+*/
+$("#addbutton6").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetadd', "WIDGET7");
+            socket.on('responseadd', function(message){
+                if (message == "NOWIDGET") {
+                    var socket6 = io.connect('http://localhost:8080');
+                    var gridster6 = $(".gridster ul").gridster().data('gridster');
+                    socket6.emit('askwidget', 'steam_player_inv');
+                    var hisID = $("#hisIdInv").val();
+                    socket6.emit('hisIdInv', hisID);
+                    socket6.on('getwidget', function(data) {
+                        console.log(data);
+                        var our_request = data;
+                        var str = '<li id="new7" style="background-color: #2c3e50; color: white; text-align:center;>';
+                        str += our_request;
+                        str += '</li>';
+                        gridster6.add_widget(str, 3, 2);
+                    });
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    alert("You can't add twice the same widget dude.")
+                }
+            });
+           }
+      );
+
+    $("#delbutton6").click( function() {
+            var socket = io.connect('http://localhost:8080');
+            socket.emit('widgetdel', "WIDGET7");
+            socket.on('responsedel', function(message){
+                if (message == "NOWIDGET") {
+                    alert("Add the widget before delete it.")
+                } else if (message == "ERROR"){
+                    alert("ERROR: BAD DEVELOPPER!")
+                } else if (message == "YWYDGET") {
+                    var listItem = document.getElementById("new7");
+                    pos = $( "li" ).index( listItem );
+                    var gridster = $(".gridster ul").gridster().data('gridster');
+                    gridster.remove_widget( $('.gridster li').eq(pos) );
+                }
+            });
+    });
+
+
+    // Google API
+
+
+    var API_key = "AIzaSyCFq5U8DOKwhVsiFF0pen-J36-mGFzuMPA";
+
+});
+</script>
+<!--
+<style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+      height: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    var map;
+    var infowindow;
+
+    function initMap() {
+      var pyrmont = {lat: -33.867, lng: 151.195};
+
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: pyrmont,
+        zoom: 15
+      });
+
+      infowindow = new google.maps.InfoWindow();
+      var service = new google.maps.places.PlacesService(map);
+      service.nearbySearch({
+        location: pyrmont,
+        radius: 500,
+        type: ['store']
+      }, callback);
+    }
+
+    function callback(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+          createMarker(results[i]);
+        }
+      }
+    }
+
+    function createMarker(place) {
+      var placeLoc = place.geometry.location;
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
+      });
+    }
+  </script>
+</head>
+
+
+<div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFq5U8DOKwhVsiFF0pen-J36-mGFzuMPA&libraries=places&callback=initMap" async defer></script>
+</div>-->
+</body>
+</html>
